@@ -372,7 +372,7 @@ class AbstractProxy(object):
         ('truediv','/'), ('floordiv','//')
     ]:
         exec (
-            "def __%(name)s__(self,ob):\n"
+            ("def __%(name)s__(self,ob):\n"
             "    return self.__subject__ %(op)s ob\n"
             "\n"
             "def __r%(name)s__(self,ob):\n"
@@ -381,7 +381,7 @@ class AbstractProxy(object):
             "def __i%(name)s__(self,ob):\n"
             "    self.__subject__ %(op)s=ob\n"
             "    return self\n"
-        )  % locals()
+        )  % locals())
 
     del name, op
 
