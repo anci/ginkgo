@@ -32,6 +32,8 @@ import ginkgo.core
 import ginkgo.logger
 import ginkgo.util
 
+from .config import Config
+
 STOP_SIGNAL = signal.SIGTERM
 RELOAD_SIGNAL = signal.SIGHUP
 

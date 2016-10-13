@@ -24,7 +24,7 @@ import os.path
 import re
 import runpy
 
-import util
+from ginkgo import util
 
 class Config(util.GlobalContext):
     """Represents a collection of settings
