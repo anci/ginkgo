@@ -57,17 +57,17 @@ def run_ginkgo():
     if args.help:
         parser.print_help()
         if args.target:
-            print # blank line
+            print ('')# blank line
             try:
                 app = setup_process(args.target)
                 app.config.print_help()
-            except RuntimeError, e:
+            except RuntimeError as e:
                 parser.error(e)
     else:
         if args.target:
             try:
                 ControlInterface().start(args.target, args.daemonize)
-            except RuntimeError, e:
+            except RuntimeError as e:
                 parser.error(e)
         else:
             parser.print_usage()
@@ -95,7 +95,7 @@ def run_ginkgoctl():
             getattr(ControlInterface(), args.action)(args.target)
         else:
             getattr(ControlInterface(), args.action)(resolve_pid(args.pid, args.target))
-    except RuntimeError, e:
+    except RuntimeError as e:
         parser.error(e)
 
 def resolve_pid(pid=None, target=None):
@@ -122,7 +122,7 @@ def load_class(class_path):
             module = runpy.run_module(module_name)
         except ImportError:
             module = runpy.run_module(module_name + ".__init__")
-    except ImportError, e:
+    except ImportError as e:
         import traceback, pkgutil
         tb_tups = traceback.extract_tb(sys.exc_info()[2])
         if pkgutil.__file__.startswith(tb_tups[-1][0]):
@@ -137,7 +137,7 @@ def load_class(class_path):
             raise
     try:
         return module[class_name]
-    except KeyError, e:
+    except KeyError as e:
         raise RuntimeError("Unable to find class in module: {}".format(
             class_path))
 
@@ -171,7 +171,7 @@ def setup_process(target, daemonize=True):
 
 class ControlInterface(object):
     def start(self, target, daemonize=True):
-        print "Starting process with {}...".format(target)
+        print ("Starting process with {}...".format(target))
         app = setup_process(target, daemonize)
         try:
             app.serve_forever()
@@ -186,24 +186,24 @@ class ControlInterface(object):
 
     def stop(self, pid):
         if self._validate(pid):
-            print "Stopping process {}...".format(pid)
+            print ("Stopping process {}...".format(pid))
             os.kill(pid, STOP_SIGNAL)
 
     def reload(self, pid):
         if self._validate(pid):
-            print "Reloading process {}...".format(pid)
+            print ("Reloading process {}...".format(pid))
             os.kill(pid, RELOAD_SIGNAL)
 
     def status(self, pid):
         if self._validate(pid):
-            print "Process is running as {}.".format(pid)
+            print ("Process is running as {}.".format(pid))
 
     def _validate(self, pid):
         try:
             os.kill(pid, 0)
             return pid
         except (OSError, TypeError):
-            print "Process is NOT running."
+            print ("Process is NOT running.")
 
     def log(self, target):
         app = setup_process(target)
@@ -296,7 +296,7 @@ class Process(ginkgo.core.Service, ginkgo.util.GlobalContext):
         try:
             self.config.reload_file()
             self.logger.load_config()
-        except RuntimeError, e:
+        except RuntimeError as e:
             logger.warn(e)
 
     def trigger_hook(self, name, *args, **kwargs):
@@ -305,7 +305,7 @@ class Process(ginkgo.core.Service, ginkgo.util.GlobalContext):
         if hook is not None and callable(hook):
             try:
                 hook(*args, **kwargs)
-            except Exception, e:
+            except Exception as e:
                 raise RuntimeError("Hook Error: {}".format(e))
 
     def __enter__(self):

@@ -26,7 +26,7 @@ def require_ready(func):
     def wrapped(self, *args, **kwargs):
         try:
             self.state.wait("ready", self.ready_timeout)
-        except Exception, e:
+        except Exception as e:
             pass
         if not self.ready:
             raise RuntimeWarning("Service must be ready to call this method.")
@@ -187,7 +187,7 @@ class BasicService(object):
         """Start the service if it hasn't been already started and wait until it's stopped."""
         try:
             self.start()
-        except RuntimeWarning, e:
+        except RuntimeWarning as e:
             # If it can't start because it's
             # already started, just move on
             pass

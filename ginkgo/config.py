@@ -74,7 +74,7 @@ class Config(util.GlobalContext):
         """loads a module as configuration given a module path"""
         try:
             return self.load(runpy.run_module(module_path))
-        except Exception, e:
+        except Exception as e:
             raise RuntimeError("Config error: {}".format(e))
 
     def load_file(self, file_path):
@@ -82,7 +82,7 @@ class Config(util.GlobalContext):
         file_path = os.path.abspath(os.path.expanduser(file_path))
         try:
             config_dict = runpy.run_path(file_path)
-        except Exception, e:
+        except Exception as e:
             raise RuntimeError("Config error: {}".format(e))
         self._last_file = file_path
         return self.load(config_dict)
@@ -110,13 +110,13 @@ class Config(util.GlobalContext):
         return self._settings
 
     def print_help(self, only_default=False):
-        print "config settings:"
+        print ("config settings:")
         for d in sorted(self._descriptors, key=lambda d: d.path):
             if d.help:
                 value = d.default if only_default else self.get(d.path,
                                                                 d.default)
-                print "  %- 14s %s [%s]" % (
-                    d.path, d.help.replace('\n', '\n'+' '*18), value)
+                print ("  %- 14s %s [%s]" % (
+                    d.path, d.help.replace('\n', '\n'+' '*18), value))
 
 
 class Group(collections.Mapping):

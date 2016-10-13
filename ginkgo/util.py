@@ -55,7 +55,7 @@ def daemonize(preserve_fds=None):
 
     def _close_fds(preserve=None):
         preserve = preserve or []
-        for fd in xrange(0, _maxfd()):
+        for fd in range(0, _maxfd()):
             if fd not in preserve:
                 try:
                     os.close(fd)
@@ -90,7 +90,7 @@ def prevent_core_dump():
         # Ensure the resource limit exists on this platform, by requesting
         # its current value
         core_limit_prev = resource.getrlimit(core_resource)
-    except ValueError, e:
+    except ValueError as e:
         raise RuntimeWarning(
             "System does not support RLIMIT_CORE resource limit ({})".format(e))
 
@@ -289,11 +289,11 @@ class Pidfile(object):
                 try:
                     os.kill(wpid, 0)
                     return wpid
-                except OSError, e:
+                except OSError as e:
                     if e[0] == errno.ESRCH:
                         return
                     raise
-        except IOError, e:
+        except IOError as e:
             if e[0] == errno.ENOENT:
                 return
             raise
@@ -352,19 +352,19 @@ class AbstractProxy(object):
         return ob in self.__subject__
 
     for name in 'repr str hash len abs complex int long float iter oct hex'.split():
-        exec "def __%s__(self): return %s(self.__subject__)" % (name,name)
+        exec ("def __%s__(self): return %s(self.__subject__)" % (name,name))
 
     for name in 'cmp', 'coerce', 'divmod':
-        exec "def __%s__(self,ob): return %s(self.__subject__,ob)" % (name,name)
+        exec ("def __%s__(self,ob): return %s(self.__subject__,ob)" % (name,name))
 
     for name,op in [
         ('lt','<'), ('gt','>'), ('le','<='), ('ge','>='),
         ('eq','=='), ('ne','!=')
     ]:
-        exec "def __%s__(self,ob): return self.__subject__ %s ob" % (name,op)
+        exec ("def __%s__(self,ob): return self.__subject__ %s ob" % (name,op))
 
     for name,op in [('neg','-'), ('pos','+'), ('invert','~')]:
-        exec "def __%s__(self): return %s self.__subject__" % (name,op)
+        exec ("def __%s__(self): return %s self.__subject__" % (name,op))
 
     for name, op in [
         ('or','|'),  ('and','&'), ('xor','^'), ('lshift','<<'), ('rshift','>>'),

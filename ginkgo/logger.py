@@ -80,14 +80,14 @@ class Logger(object):
 
     def print_log(self):
         with open(self.logfile, "r") as f:
-            print f.read()
+            print (f.read())
 
     def tail_log(self):
         with open(self.logfile, "r") as f:
             lines = f.readlines()
             for line in lines[-20:]:
-                print line.strip()
+                print (line.strip())
             while True:
                 line = f.readline()
                 if line:
-                    print line.strip()
+                    print (line.strip())
