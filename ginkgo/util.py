@@ -28,7 +28,7 @@ class defaultproperty(object):
         if instance is None:
             return None
         for kls in owner.__mro__:
-            for key, value in kls.__dict__.iteritems():
+            for key, value in kls.__dict__.items():
                 if value == self:
                     newval = self.default_factory(*self.args, **self.kwargs)
                     instance.__dict__[key] = newval

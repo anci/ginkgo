@@ -86,7 +86,7 @@ class BasicService(object):
         pass
 
     def __new__(cls, *args, **kwargs):
-        s = super(BasicService, cls).__new__(cls, *args, **kwargs)
+        s = super(BasicService, cls).__new__(cls)
         s.pre_init()
         s.state = cls._statemachine_class(s)
         return s
